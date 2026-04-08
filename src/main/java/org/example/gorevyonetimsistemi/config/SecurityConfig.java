@@ -39,22 +39,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // CSRF korumasını devre dışı bırakır (REST API projelerinde genellikle kapalı tutulur)
                 .csrf(AbstractHttpConfigurer::disable)
-
-                // CORS (Cross-Origin Resource Sharing) ayarlarını varsayılan olarak devre dışı bırakır
                 .cors(AbstractHttpConfigurer::disable)
-
-                // İstek bazlı yetkilendirme kuralları
                 .authorizeHttpRequests(auth -> auth
-                        // '/api/auth/' ile başlayan tüm isteklere (login, register vb.) herkese izin ver
+                        // Kimlik doğrulama API'lerine her zaman izin ver
                         .requestMatchers("/api/auth/**").permitAll()
-
-                        // Diğer tüm isteklere erişim için kullanıcı girişi (authentication) şarttır
+                        // Task API'lerini Spring Security seviyesinde serbest bırakıyoruz,
+                        // Çünkü güvenliği zaten UserActivationInterceptor içinde biz yönetiyoruz.
+                        .requestMatchers("/api/tasks/**").permitAll()
                         .anyRequest().authenticated()
                 )
-
-                // Güvenlik başlıklarını yapılandırır (Örn: H2-Console kullanımı için FrameOptions kapatıldı)
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()));
 
         return http.build();
