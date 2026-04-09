@@ -17,38 +17,26 @@ public class TaskController {
     private final TaskService taskService;
 
     @PostMapping()
-    public Task createTask(@RequestBody Task task,
-                           @RequestAttribute("authenticatedUser") User user) {
+    public Task createTask(@RequestBody Task task, @RequestAttribute("authenticatedUser") User user) {
         return taskService.createTask(task, user);
     }
 
     @GetMapping()
     public List<Task> getMyTasks(@RequestAttribute("authenticatedUser") User user) {
-        if (user == null) {
-            throw new RuntimeException("Yetkisiz erişim: Kullanıcı bilgisi alınamadı!");
-        }
+        if (user == null) { throw new RuntimeException("Yetkisiz erişim: Kullanıcı bilgisi alınamadı!"); }
         return taskService.getAllTasksForUser(user);
     }
 
     @PutMapping("{id}/status")
-    public Task updateStatus(@PathVariable Long id,
-                             @RequestParam String status,
+    public Task updateStatus(@PathVariable Long id, @RequestParam String status,
                              @RequestAttribute("authentiacationUser" ) User user) {
         return taskService.updateTask(id, status, user);
     }
 
-    public String deleteTask(@PathVariable Long id,
-                             @RequestAttribute("authemticationUser") User user) {
+    @DeleteMapping("/{id}")
+    public String deleteTask(@PathVariable Long id, @RequestAttribute("authenticatedUser") User user) {
         taskService.deleteTask(id, user);
         return "Görev başarıyla silinmiştir.";
     }
-
-
-
-
-
-
-
-
 
 }

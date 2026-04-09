@@ -42,7 +42,6 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        // Kimlik doğrulama API'lerine her zaman izin ver
                         .requestMatchers("/api/auth/**").permitAll()
                         // Task API'lerini Spring Security seviyesinde serbest bırakıyoruz,
                         // Çünkü güvenliği zaten UserActivationInterceptor içinde biz yönetiyoruz.
