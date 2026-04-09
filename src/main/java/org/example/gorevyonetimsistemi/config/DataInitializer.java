@@ -2,6 +2,7 @@ package org.example.gorevyonetimsistemi.config;
 
 import lombok.RequiredArgsConstructor;
 import org.example.gorevyonetimsistemi.entity.Role;
+import org.example.gorevyonetimsistemi.model.RoleType;
 import org.example.gorevyonetimsistemi.repository.RoleRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -28,14 +29,15 @@ public class DataInitializer implements CommandLineRunner {
      */
     @Override
     public void run(String... args) {
-        /*
-         * Eğer veritabanında 'ROLE_USER' adında bir kayıt bulunamazsa,
-         * sisteme ilk defa dahil olan kullanıcılara atanacak olan varsayılan rolü oluşturur.
-         */
-        if (roleRepository.findByName("ROLE_USER").isEmpty()) {
+        if (roleRepository.findByName(RoleType.ROLE_USER).isEmpty()) {
             Role role = new Role();
-            role.setName("ROLE_USER");
+            role.setName(RoleType.ROLE_USER);
             roleRepository.save(role);
+        }
+        if (roleRepository.findByName(RoleType.ROLE_ADMIN).isEmpty()) {
+            Role adminRole = new Role();
+            adminRole.setName(RoleType.ROLE_ADMIN);
+            roleRepository.save(adminRole);
         }
     }
 }

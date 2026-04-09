@@ -11,6 +11,8 @@ public interface TaskService {
 
     List<Task> getAllTasksForUser(User user);
 
+    List<Task> getTasksCreatedByMe(User user);
+
     Task updateTask(Long taskId, String status, User user);
 
     void deleteTask(Long taskId, User user);

@@ -35,6 +35,11 @@ public class Task {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "assigned_to_id", nullable = false)
+    private User assignedUser;
+
+    // Görevi sistemde oluşturan yetkili (Admin)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "created_by_id", nullable = false)
+    private User createdBy;
 }

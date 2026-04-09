@@ -8,6 +8,7 @@ import org.example.gorevyonetimsistemi.entity.User;
 import org.example.gorevyonetimsistemi.entity.VerificationToken;
 import org.example.gorevyonetimsistemi.model.LoginRequest;
 import org.example.gorevyonetimsistemi.model.RegisterRequest;
+import org.example.gorevyonetimsistemi.model.RoleType;
 import org.example.gorevyonetimsistemi.repository.RoleRepository;
 import org.example.gorevyonetimsistemi.repository.UserRepository;
 import org.example.gorevyonetimsistemi.repository.VerificationTokenRepository;
@@ -50,17 +51,13 @@ public class AuthServiceImpl implements AuthService {
         User user = new User();
         user.setUsername(registerRequest.getUsername());
         user.setEmail(registerRequest.getEmail());
-
-        // Şifreyi açık metin olarak değil, hashlenmiş olarak saklıyoruz
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-
-        // Varsayılan rol ataması (ROLE_USER)
-        Role userRole = roleRepository.findByName("ROLE_USER")
+        Role userRole = roleRepository.findByName(RoleType.ROLE_USER)
                 .orElseThrow(() -> new RuntimeException("Hata: Başlangıç rolü bulunamadı!"));
         user.setRoles(Collections.singleton(userRole));
         userRepository.save(user);
 
-        // Aktivasyon süreci başlatma
+
         String token = java.util.UUID.randomUUID().toString();
         VerificationToken verificationToken = new VerificationToken(token, user);
         tokenRepository.save(verificationToken);

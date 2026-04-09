@@ -8,7 +8,8 @@ import java.util.List;
 
 public interface TaskRepository extends JpaRepository<Task,Long> {
 
-    List<Task> findByUser(User user);
+    List<Task> findByAssignedUser(User user);
+    List<Task> findByCreatedBy(User user);
 
 
 
